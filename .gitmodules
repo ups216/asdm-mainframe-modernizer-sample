@@ -1,0 +1,8 @@
+[submodule "cics-banking-sample-application-cbsa"]
+	path = cics-banking-sample-application-cbsa
+	url = git@github.com:ups216/cics-banking-sample-application-cbsa.git
+	branch = feat/leixu/0145-mainframe-modernization
+[submodule "modern-banking"]
+	path = modern-banking
+	url = git@github.com:ups216/modern-cics-banking-sample-application-cbsa.git
+	branch = feat/leixu/0145-mirgration-prep
