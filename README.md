@@ -1,8 +1,8 @@
 # ASDM Mainframe Modernizer Sample
 
 > **[ASDM](https://asdm.ai)** (AI-First System Development Methodology) is a methodology that places AI at the core of the software development lifecycle — accelerating development, deployment, and maintenance of intelligent systems.
->
-> A sample project demonstrating mainframe-to-cloud modernization using the ASDM Mainframe Modernizer toolset. This repository contains both the legacy IBM CICS Banking Sample Application and its modernized cloud-native counterpart as git submodules.
+
+A sample project demonstrating mainframe-to-cloud modernization using the ASDM Mainframe Modernizer toolset. This repository contains both the legacy IBM CICS Banking Sample Application and its modernized cloud-native counterpart as git submodules.
 
 ## Repository Structure
 
@@ -65,28 +65,93 @@ docker-compose up
 
 ## Architecture
 
+### Before — Mainframe (z/OS)
+
+```mermaid
+graph TB
+    subgraph "User Interfaces"
+        BMS["BMS 3270 Terminal<br/>COBOL/BMS"]
+        CR["Carbon React UI<br/>React + IBM Carbon"]
+        CS["Customer Services<br/>Spring Boot + Thymeleaf"]
+        PAY["Payment Interface<br/>Spring Boot + Thymeleaf"]
+    end
+
+    subgraph "API / Integration Layer"
+        JAX["JAX-RS REST API<br/>/banking/*<br/>Liberty JVM Server"]
+        ZOS["z/OS Connect EE<br/>10 APIs / 10 Services"]
+    end
+
+    subgraph "CICS Transaction Server"
+        COBOL["COBOL Programs<br/>29 Programs"]
+        CICSAPI["CICS API<br/>LINK / Commarea"]
+    end
+
+    subgraph "Data Layer"
+        DB2["Db2 V12+<br/>ACCOUNT, CONTROL, PROCTRAN"]
+        VSAM["VSAM KSDS<br/>CUSTOMER, ABNDFILE"]
+    end
+
+    BMS -->|CICS terminal| CICSAPI
+    CR -->|HTTP REST| JAX -->|CICS LINK / JDBC| COBOL
+    JAX -->|JDBC| DB2
+    JAX -->|JCICS| VSAM
+    CS -->|Spring WebClient| ZOS -->|CICS Commarea| CICSAPI
+    PAY -->|Spring WebClient| ZOS
+    CICSAPI --> COBOL
+    COBOL -->|SQL| DB2
+    COBOL -->|VSAM I/O| VSAM
 ```
-                 ┌──────────────┐
-                 │  React SPA   │
-                 │  :3000       │
-                 └──────┬───────┘
-                        │ /api/v1/*
-                 ┌──────▼───────┐
-                 │ API Gateway  │
-                 │ Spring Cloud │
-                 │ :8080        │
-                 └──────┬───────┘
-           ┌────────────┼────────────┐
-   ┌───────▼──────┐ ┌──▼────────┐ ┌──▼────────────┐
-   │ Account Svc  │ │ Customer  │ │ Transaction   │
-   │ :8081        │ │ Service   │ │ Service       │
-   │              │ │ :8082     │ │ :8083         │
-   └───────┬──────┘ └──┬────────┘ └──┬────────────┘
-           │           │              │
-   ┌───────▼──────┐ ┌──▼────────┐ ┌──▼────────────┐
-   │ bank_account │ │ bank_     │ │ bank_proctran │
-   │ bank_control │ │ customer  │ │               │
-   └──────────────┘ └───────────┘ └───────────────┘
+
+### After — Cloud-Native (x86 Linux)
+
+```mermaid
+graph TB
+    subgraph "Client"
+        BROWSER["Browser<br/>React SPA"]
+    end
+
+    subgraph "Ingress"
+        GW["API Gateway<br/>Spring Cloud Gateway<br/>:8080"]
+    end
+
+    subgraph "Microservices — Spring Boot 3.x"
+        ACCT["account-service<br/>:8081"]
+        CUST["customer-service<br/>:8082"]
+        TXN["transaction-service<br/>:8083"]
+        BATCH["batch-service<br/>:8084"]
+    end
+
+    subgraph "Data — PostgreSQL :5432"
+        DB1["bank_account<br/>bank_control"]
+        DB2["bank_customer"]
+        DB3["bank_proctran"]
+    end
+
+    subgraph "Infrastructure"
+        DOCKER["Docker / Kubernetes"]
+        CICD["GitHub Actions CI/CD"]
+    end
+
+    BROWSER -->|HTTP /api/v1/*| GW
+    GW --> ACCT
+    GW --> CUST
+    GW --> TXN
+    GW --> BATCH
+
+    ACCT --> DB1
+    CUST --> DB2
+    TXN --> DB3
+    BATCH --> DB1
+    BATCH --> DB3
+
+    ACCT -.->|Saga/Event| TXN
+    CUST -.->|Saga/Event| ACCT
+
+    DOCKER --- ACCT
+    DOCKER --- CUST
+    DOCKER --- TXN
+    DOCKER --- BATCH
+    CICD -.-> DOCKER
 ```
 
 ## COBOL-to-Java Mapping
