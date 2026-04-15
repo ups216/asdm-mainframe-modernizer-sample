@@ -2,7 +2,7 @@
 
 > **[ASDM](https://asdm.ai)** (AI-First System Development Methodology) is a methodology that places AI at the core of the software development lifecycle — accelerating development, deployment, and maintenance of intelligent systems.
 
-> **[中文版本](README_CN.md)** | **English Version**
+> **[中文版本](README_CN.md)** | **[English Version](README.md)**
 
 A sample project demonstrating mainframe-to-cloud modernization using the ASDM Mainframe Modernizer toolset. This repository contains both the legacy IBM CICS Banking Sample Application and its modernized cloud-native counterpart as git submodules.
 

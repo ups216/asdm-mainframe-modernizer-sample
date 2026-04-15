@@ -2,6 +2,8 @@
 
 > **[ASDM](https://asdm.ai)** (AI-First System Development Methodology) 是一种将 AI 置于软件开发生命周期核心的方法论 — 加速智能系统的开发、部署和维护。
 
+> **中文版本** | **[English Version](README.md)**
+
 这是一个使用 ASDM 大型机现代化工具集展示大型机到云现代化的示例项目。该仓库包含传统的 IBM CICS 银行示例应用程序及其现代化的云原生对应版本作为 git 子模块。
 
 该项目为希望现代化其大型机工作负载的组织提供了端到端的参考。它涵盖了完整的转型旅程 — 从盘点遗留 COBOL 程序、BMS 映射集和 JCL 脚本，到架构设计、代码转换，最终实现完全容器化的云原生部署，运行在 x86 Linux 上。
