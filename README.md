@@ -1,5 +1,14 @@
 # ASDM Mainframe Modernizer Sample
 
+[![License](https://img.shields.io/badge/License-Sample-blue.svg)](LICENSE)
+[![GitHub Issues](https://img.shields.io/github/issues/ups216/asdm-mainframe-modernizer-sample)](https://github.com/ups216/asdm-mainframe-modernizer-sample/issues)
+[![GitHub Forks](https://img.shields.io/github/forks/ups216/asdm-mainframe-modernizer-sample)](https://github.com/ups216/asdm-mainframe-modernizer-sample/network/members)
+[![GitHub Stars](https://img.shields.io/github/stars/ups216/asdm-mainframe-modernizer-sample)](https://github.com/ups216/asdm-mainframe-modernizer-sample/stargazers)
+[![Java](https://img.shields.io/badge/Java-17%2B-red.svg)](https://openjdk.java.net/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-green.svg)](https://spring.io/projects/spring-boot)
+[![React](https://img.shields.io/badge/React-18%2B-blue.svg)](https://reactjs.org/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
+
 > **[ASDM](https://asdm.ai)** (AI-First System Development Methodology) is a methodology that places AI at the core of the software development lifecycle — accelerating development, deployment, and maintenance of intelligent systems.
 
 > **[中文版本](README_CN.md)** | **[English Version](README.md)**
